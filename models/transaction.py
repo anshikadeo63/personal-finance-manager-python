@@ -102,8 +102,31 @@ def DisplayTransaction(transaction_main_list):
     for transaction_obj in transaction_main_list:
         print(transaction_obj)
 
+# deletes transactions
 def DeleteTransaction(transaction_main_list):
-    pass
-
-StoreTransaction(transaction_main_list) 
-DisplayTransaction(transaction_main_list)    
+    if len(transaction_main_list) != 0:
+        print("--------------------------------------------")
+        print("          Displaying transactions")
+        print("--------------------------------------------")
+        for transaction_id, transaction in enumerate(transaction_main_list, start=1):
+            print(f"(ID {transaction_id}) {transaction.transaction_type} - ${transaction.amount} - {transaction.date}")
+        while True:
+            try:
+                while True:     
+                    user_choice_id = int(input("Enter Transaction ID to delete: "))
+                    if (1 <= user_choice_id <= len(transaction_main_list)):
+                        user_choice_id -= 1
+                        transaction_main_list.pop(user_choice_id)
+                        break
+                    else:
+                        print("Invalid Transaction ID!")
+                print("Transaction successfully deleted!")
+            except ValueError:
+                print("Enter a number only!")
+            else:
+                break
+    else:
+        print("No transactions available!")
+StoreTransaction(transaction_main_list)
+DisplayTransaction(transaction_main_list)
+DeleteTransaction(transaction_main_list)
