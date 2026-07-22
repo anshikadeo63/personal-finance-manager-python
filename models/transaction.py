@@ -1,7 +1,6 @@
 from datetime import datetime
 
-transaction_main_list = []
-
+# transaction class
 class Transaction:
     def __init__(self, transaction_type, amount, category, date, description):
         self.transaction_type = transaction_type
@@ -21,7 +20,13 @@ Date: {self.date}
 Description: {self.description}
 ===================================
     """
-# returns choosen transaction type (income/expense)
+
+# globally defined lists
+transaction_main_list = []
+category_list_income = ["Salary", "Freelance", "Investments", "Gift","Other"]
+category_list_expense = ["Food", "Shopping", "Rent", "Bills", "Entertainment", "Transport", "Healthcare", "Education", "Other"]
+
+# helper fxn - returns choosen transaction type (income/expense)
 def ChooseTransactionType():
     type_dict = {"A": "Income", "B": "Expense"}
     while True:
@@ -32,94 +37,74 @@ def ChooseTransactionType():
         else:
             print("Choose from the above options only!")
 
-# prints income/expense lists and returns category
-def ChooseCategory():
-    type_transaction = ChooseTransactionType()
-    if type_transaction == "Income":  
-        ategory_list_income = ["0", "Salary", "Freelance", "Investments", "Gift","Other"]  
-        category = int(input("\nChoose from the following Income Categories\n(1) Salary\n(2) Freelance\n(3) Investments\n(4) Gift\n(5) Other\nEnter: "))
-        return category
+# helper fxn - prints income/expense lists and returns category
+def ChooseCategory(transaction_type):
+    
+    if transaction_type == "Income":
+        categories = category_list_income
     else:
-        category_list_expense = ["0", "Food", "Shopping", "Rent", "Bills", "Entertainment", "Transport", "Healthcare", "Education", "Other"]    
-        category = int(input("\nChoose from the following Expense Categories\n(1) Food\n(2) Shopping\n(3) Rent\n(4) Bills\n(5) Entertainment\n(6) Transport\n(7) Healthcare\n(8) Education\n(9) Other\nEnter: "))
-        return category
-                  
+        categories = category_list_expense
 
-# adds transactions
+    while True:
+        for index, category in enumerate(categories, start=1):
+            print(f"{index}. {category}")
+
+        choice = GetIntegerInput("Choose category: ")
+
+        if 1 <= choice <= len(categories):
+            return categories[choice-1]
+
+        print("Invalid choice!")           
+
+# helper fxn - returns amount
+def GetAmount():
+    # loops until amount is a number
+    while True:
+        try:
+            amount = float(input("Amount: "))
+            if amount <= 0:
+                print("Amount must be positive!")
+            else:
+                return amount
+        except ValueError:
+            print("Enter a value only!")
+
+# helper fxn - returns integer input
+def GetIntegerInput(string):
+    while True:
+        try:
+            number = int(input(string))
+            return number
+        except ValueError:
+            print("Enter a number only!")
+        
+# core fxn - adds transactions
 def AddTransaction():     
     transaction_type = ChooseTransactionType()  
-    # if user selects income
-    if (transaction_type == "Income"):
-        # loops until amount is a integer
-        while True:
-            try:
-                amount = int(input("Amount: "))
-                transaction_amount = amount
-            except ValueError:
-                print("Enter a value only!")
-            else:
-                break
-        # loops until amount is a integer 
-        while True:
-            # exceptions handling for ValueError
-            try:
-                while True:
-                    category_list_income = ["0", "Salary", "Freelance", "Investments", "Gift","Other"] 
-                    category = ChooseCategory()
-                    if (1 <= category <= 5):
-                        transaction_category = category_list_income[category]
-                        break
-                    else:
-                        print("Choose from the choices only!")
-            except ValueError:
-                print("Please enter a number only!")
-            else:
-                break 
-    # if user selects expense             
-    elif (transaction_type == "Expense"):
-        # loops until integer value
-        while True:
-            try:
-                amount = int(input("Amount: "))
-                transaction_amount = amount
-            except ValueError:
-                print("Enter a value only!")
-            else:
-                break 
-        # loops until integer value
-        while True:
-            try:
-                while True:
-                    category_list_expense = ["0", "Food", "Shopping", "Rent", "Bills", "Entertainment", "Transport", "Healthcare", "Education", "Other"]    
-                    category = ChooseCategory()
-                    if (1 <= category <= 9):
-                        transaction_category = category_list_expense[category]
-                        break
-                    else:
-                        print("Choose from the choices only!")
-            except ValueError:
-                print("Please enter the number only!")
-            else:
-                break                
-            
-    not_formatted_date = datetime.now()
-    transaction_date = not_formatted_date.strftime("%d-%m-%Y")    
+    transaction_amount = GetAmount() 
+    # assigns category type    
+    transaction_category = ChooseCategory(transaction_type)
+    # date       
+    transaction_date = datetime.now().strftime("%d-%m-%Y")    
     transaction_description = input("Write description for the transaction: ")
     transaction1 = Transaction(transaction_type, transaction_amount, transaction_category, transaction_date, transaction_description)
 
     return transaction1
 
-# stores transaction into a list by calling AddTransaction function        
+# core fxn - stores transaction into a list by calling AddTransaction function        
 def StoreTransaction(transaction_main_list):
-    transaction_add = AddTransaction()
-    transaction_main_list.append(transaction_add)
+    transaction_main_list.append(AddTransaction())
+    print("Transaction successfully added!")
 
-# displays transactions
+# core fxn - displays transactions
 def DisplayTransaction(transaction_main_list):
-    for transaction_obj in transaction_main_list:
-        print(transaction_obj)
+    if len(transaction_main_list) != 0:
+        for transaction_obj in transaction_main_list:
+            print(transaction_obj)
+    else:
+        print("No transactions available!")
 
-# deletes transactions
+# core fxn - deletes transactions
 def DeleteTransaction(transaction_main_list):
     if len(transaction_main_list) != 0:
         print("--------------------------------------------")
@@ -127,25 +112,19 @@ def DeleteTransaction(transaction_main_list):
         print("--------------------------------------------")
         for transaction_id, transaction in enumerate(transaction_main_list, start=1):
             print(f"(ID {transaction_id}) {transaction.transaction_type} - ${transaction.amount} - {transaction.date}")
-        while True:
-            try:
-                while True:     
-                    user_choice_id = int(input("Enter Transaction ID to delete: "))
-                    if (1 <= user_choice_id <= len(transaction_main_list)):
-                        user_choice_id -= 1
-                        transaction_main_list.pop(user_choice_id)
-                        break
-                    else:
-                        print("Invalid Transaction ID!")
-                print("Transaction successfully deleted!")
-            except ValueError:
-                print("Enter a number only!")
-            else:
+        while True:   
+            user_choice_id = GetIntegerInput("Enter Transaction ID to delete: ")
+            if (1 <= user_choice_id <= len(transaction_main_list)):
+                user_choice_id -= 1
+                transaction_main_list.pop(user_choice_id)
                 break
+            else:
+                print("Invalid Transaction ID!")
+        print("Transaction successfully deleted!")
     else:
         print("No transactions available!")
 
-# updating transactions
+# core fxn - updating transactions
 def UpdateTransaction(transaction_main_list):
     if len(transaction_main_list) != 0:
         print("--------------------------------------------")
@@ -153,56 +132,40 @@ def UpdateTransaction(transaction_main_list):
         print("--------------------------------------------")
         for transaction_id, transaction in enumerate(transaction_main_list, start=1):
             print(f"(ID {transaction_id}) {transaction.transaction_type} - ${transaction.amount} - {transaction.date}")
-        while True:
-            try:
-                while True:     
-                    user_choice_id = int(input("Enter Transaction ID to update: "))
-                    if (1 <= user_choice_id <= len(transaction_main_list)):
-                        user_choice_id -= 1
-                        while True:
-                            try:
-                                while True:
-                                    user_update_choice = int(input("\nWhat do you want to update?\n1. Transaction Type\n2. Amount\n3. Category\n4. Description\n5. Cancel\nEnter: "))
-                                    if (1 <= user_update_choice <= 5):
-                                        match (user_update_choice):
-                                            case 1:
-                                                new_type = ChooseTransactionType()
-                                                transaction_main_list[user_choice_id].transaction_type = new_type
-                                                new_catgory = ChooseCategory()
-                                                transaction_main_list[user_choice_id].category = new_catgory
-                                                print(transaction_main_list[user_choice_id])
-                                                print("Transaction type successfully updated!")
-                                            case 2:
-                                                while True:
-                                                    try:
-                                                        new_amount = int(input("Enter new amount: "))
-                                                        transaction_main_list[user_choice_id].amount = new_amount
-                                                        print("Amount Successfully updated!")
-                                                    except (ValueError):
-                                                        print("Enter a value only")
-                                                    else:
-                                                        break
-                                            case 3:
-                                                pass
-                                            case 4:
-                                                new_description = input("Enter new description: ")
-                                                transaction_main_list[user_choice_id].description = new_description
-                                                print("Description successfully updated!")
-                                            case 5:
-                                                pass  
-                                        break
-                                    else:
-                                        print("Enter from the above choices only!")
-                            except (ValueError):
-                                print("Enter a number only!")
-                            else:
-                                break
+        while True:            
+            user_choice_id = GetIntegerInput("Enter Transaction ID to update: ")
+            if (1 <= user_choice_id <= len(transaction_main_list)):
+                user_choice_id -= 1
+                while True:
+                    user_update_choice = GetIntegerInput("\nWhat do you want to update?\n1. Transaction Type\n2. Amount\n3. Category\n4. Description\n5. Cancel\nEnter: ")
+                    if (1 <= user_update_choice <= 5):
+                        match (user_update_choice):
+                            case 1:
+                                new_type = ChooseTransactionType()
+                                transaction_main_list[user_choice_id].transaction_type = new_type
+                                new_category = ChooseCategory(transaction_main_list[user_choice_id].transaction_type)
+                                transaction_main_list[user_choice_id].category = new_category
+                                print("Transaction type successfully updated!")
+                            case 2:
+                                new_amount = GetAmount()
+                                transaction_main_list[user_choice_id].amount = new_amount
+                                print("Amount Successfully updated!")
+                            case 3:
+                                new_category_c = ChooseCategory(transaction_main_list[user_choice_id].transaction_type)
+                                transaction_main_list[user_choice_id].category = new_category_c
+                                print("Category successfully updated!")
+                            case 4:
+                                new_description = input("Enter new description: ")
+                                transaction_main_list[user_choice_id].description = new_description
+                                print("Description successfully updated!")
+                            case 5:
+                                print("Update cancelled!")
+                                return
+                        break
                     else:
-                        print("Invalid Transaction ID!")
-            except ValueError:
-                print("Enter a number only!")
+                        print("Enter from the above choices only!")
             else:
-                break
+                print("Invalid Transaction ID!")
     else:
         print("No transactions available!")
         
