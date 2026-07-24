@@ -1,4 +1,6 @@
-# helper fxn - returns amount
+# HELPER FXN - GetAmount (error handling for amount)
+# PARAMETERS - None
+# RETURN VALUES - None
 def GetAmount():
     # loops until amount is a number
     while True:
@@ -11,11 +13,13 @@ def GetAmount():
         except ValueError:
             print("Enter a value only!")
 
-# helper fxn - returns integer input
+# HELPER FXN - GetIntegerInput (error handling for getting an int number only)
+# PARAMETERS - string(str)
+# RETURN VALUES - None
 def GetIntegerInput(string):
     while True:
-        try:
-            number = int(input(string))
-            return number
-        except ValueError:
-            print("Enter a number only!")       
+            try:
+                number = int(input(string))
+                return number
+            except ValueError:
+                print("Enter a number only!")       

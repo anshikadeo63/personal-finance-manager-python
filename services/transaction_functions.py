@@ -6,7 +6,9 @@ transaction_main_list = []
 category_list_income = ["Salary", "Freelance", "Investments", "Gift","Other"]
 category_list_expense = ["Food", "Shopping", "Rent", "Bills", "Entertainment", "Transport", "Healthcare", "Education", "Other"]
 
-# helper fxn - returns choosen transaction type (income/expense)
+# HELPER FXN - ChooseTransactionType (chooses income/ expense for Transaction attribute-transaction type )
+# PARAMETERS - None
+# RETURN VALUES - type_dict[type_1](str)(income/expense) 
 def ChooseTransactionType():
     type_dict = {"A": "Income", "B": "Expense"}
     while True:
@@ -17,7 +19,8 @@ def ChooseTransactionType():
         else:
             print("Choose from the above options only!")
 
-# helper fxn - prints income/expense lists and returns category
+# HELPER FXN - ChooseCategory (chooses category for Transaction attribute-transaction category )
+# PARAMETERS - transaction_type(str)
 def ChooseCategory(transaction_type):
     
     if transaction_type == "Income":
@@ -36,7 +39,9 @@ def ChooseCategory(transaction_type):
 
         print("Invalid choice!")           
         
-# core fxn - adds transactions
+# FXN - AddTransaction (adds transaction class attributes)
+# PARAMETERS - None
+# RETURN VALUES - transaction1 (Transaction obj)
 def AddTransaction():     
     transaction_type = ChooseTransactionType()  
     transaction_amount = GetAmount() 
@@ -49,12 +54,16 @@ def AddTransaction():
 
     return transaction1
 
-# core fxn - stores transaction into a list by calling AddTransaction function        
+# FXN - StoreTransaction (calls AddTransaction fxn and adds object to main list)
+# PARAMETERS - transaction_main_list(list)
+# RETURN VALUES - None
 def StoreTransaction(transaction_main_list):
     transaction_main_list.append(AddTransaction())
     print("Transaction successfully added!")
 
-# core fxn - displays transactions
+# FXN - DisplayTransaction (displays transaction obj)
+# PARAMETERS - transaction_main_list(list)
+# RETURN VALUES - None
 def DisplayTransaction(transaction_main_list):
     if len(transaction_main_list) != 0:
         for transaction_obj in transaction_main_list:
@@ -62,7 +71,9 @@ def DisplayTransaction(transaction_main_list):
     else:
         print("No transactions available!")
 
-# core fxn - deletes transactions
+# FXN - DeleteTransaction (deletes transaction obj)
+# PARAMETERS - transaction_main_list(list)
+# RETURN VALUES - None
 def DeleteTransaction(transaction_main_list):
     if len(transaction_main_list) != 0:
         print("--------------------------------------------")
@@ -82,7 +93,9 @@ def DeleteTransaction(transaction_main_list):
     else:
         print("No transactions available!")
 
-# core fxn - updating transactions
+# FXN - UpdateTransaction (updates attributes of transaction obj)
+# PARAMETERS - transaction_main_list(list)
+# RETURN VALUES - None
 def UpdateTransaction(transaction_main_list):
     if len(transaction_main_list) != 0:
         print("--------------------------------------------")

@@ -1,12 +1,18 @@
-# transaction class
+from dataclasses import dataclass
+
+@dataclass
 class Transaction:
-    def __init__(self, transaction_type, amount, category, date, description):
-        self.transaction_type = transaction_type
-        self.amount = amount
-        self.category = category
-        self.date = date
-        self.description = description
     
+    transaction_type: str
+    amount: float
+    category: str
+    date: str
+    description: str
+    
+    def __post_init__(self):
+        if self.amount <= 0:
+            raise ValueError("Amount must be greater than zero")      
+
     def __str__(self):
         return f"""
 ===================================
@@ -18,3 +24,4 @@ Date: {self.date}
 Description: {self.description}
 ===================================
     """
+    
