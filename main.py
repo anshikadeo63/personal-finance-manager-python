@@ -1,7 +1,8 @@
 from services.transaction_functions import *
 from services.analytics import *
+from storage.csv_handler import *
 
-transaction_main_list = []
+transaction_main_list = LoadTransactions()
 
 while True:
     print("\n=============================\nPersonal Finance Manager\n=============================\n1. Add Transaction\n2. Display Transaction\n3. Update Transaction\n4. Delete Transaction\n5. Calculate Balance\n6. Expense Summary\n7. Highest Expense\n8. Exit")
@@ -16,7 +17,7 @@ while True:
             print("Enter a number only!")
         else:
             break
-        
+           
     match (selected_choice):
         case 1:
             StoreTransaction(transaction_main_list)
@@ -52,6 +53,7 @@ while True:
                 print(f"Category: {category}\nAmount: {highest_expense_amount}")
                 enter_input = input("Press Enter to continue.......")
         case 8:
+            SaveTransactionsToCSV(transaction_main_list)
             print("Thank you for visiting our transaction management system!")
             break
 

@@ -27,7 +27,7 @@ def ChooseCategory(transaction_type):
         categories = category_list_income
     else:
         categories = category_list_expense
-
+    print()
     while True:
         for index, category in enumerate(categories, start=1):
             print(f"{index}. {category}")
