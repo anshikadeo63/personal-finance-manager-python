@@ -38,7 +38,12 @@ def ChooseCategory(transaction_type):
             return categories[choice-1]
 
         print("Invalid choice!")           
-        
+
+# HELPER FXN - DisplaySearchResults ()
+# PARAMETERS - 
+def DisplaySearchResults(condition):
+    pass 
+
 # FXN - AddTransaction (adds transaction class attributes)
 # PARAMETERS - None
 # RETURN VALUES - transaction1 (Transaction obj)
@@ -140,3 +145,52 @@ def UpdateTransaction(transaction_main_list):
     else:
         print("No transactions available!")
         
+# FXN - SearchTransactions (searches transaction based on a attribute)
+# PARAMETERS - transaction_main_list(list)
+# RETURN VALUES - None        
+def SearchTransactions(transaction_main_list):
+    while True:
+        selected_choice = GetIntegerInput("\nSearch by\n1. Transaction Type\n2. Category\n3. Date\n4. Description\nEnter choice: ")
+        if (1<= selected_choice <= 4):
+            match (selected_choice):
+                case 1:
+                    selected_type = ChooseTransactionType()
+                    is_found = False
+                    for transaction in transaction_main_list:
+                        if (transaction.transaction_type == selected_type) :
+                            print(transaction)
+                            is_found = True
+                    if (is_found == False):
+                        print("No matching transactions found.")
+                case 2:
+                    selected_category = ChooseCategory(ChooseTransactionType())
+                    is_found = False
+                    for transaction in transaction_main_list:
+                        if (transaction.category == selected_category):
+                            print(transaction)
+                            is_found = True
+                    if (is_found == False):
+                        print("No matching transactions found.")
+                        
+                case 3:
+                    entered_date = input("\nEnter date (DD-MM-YYYY): ")
+                    is_found = False
+                    for transaction in transaction_main_list:
+                        if (transaction.date == entered_date):
+                            print(transaction)
+                            is_found = True
+                    if (is_found == False):
+                        print("No matching transactions found.")
+    
+                case 4:
+                    entered_description = input("\nEnter description: ")
+                    is_found = False
+                    for transaction in transaction_main_list:
+                        if (entered_description.lower() in (transaction.description).lower()):
+                            print(transaction)
+                            is_found = True
+                    if (is_found == False):
+                        print("No matching transactions found.") 
+            break          
+        else:
+            print("Enter from the given choices only!")
