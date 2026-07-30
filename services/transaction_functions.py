@@ -39,10 +39,17 @@ def ChooseCategory(transaction_type):
 
         print("Invalid choice!")           
 
-# HELPER FXN - DisplaySearchResults ()
-# PARAMETERS - 
-def DisplaySearchResults(condition):
-    pass 
+# HELPER FXN - DisplaySearchResults (searches transaction), (reduces reduction by using lambda fxn)
+# PARAMETERS - transaction_main_list (list), condition (function)
+def DisplaySearchResults(transaction_main_list, condition):
+    is_found = False
+    for transaction in transaction_main_list:
+        # condition(transaction) returns boolean
+        if condition(transaction):
+            print(transaction)
+            is_found = True
+    if (is_found == False):
+        print("No matching transactions found.")       
 
 # FXN - AddTransaction (adds transaction class attributes)
 # PARAMETERS - None
@@ -84,16 +91,19 @@ def DeleteTransaction(transaction_main_list):
         print("--------------------------------------------")
         print("          Displaying transactions")
         print("--------------------------------------------")
-        for transaction_id, transaction in enumerate(transaction_main_list, start=1):
-            print(f"(ID {transaction_id}) {transaction.transaction_type} - ${transaction.amount} - {transaction.date}")
+        for transaction in transaction_main_list:
+            print(f"(ID {transaction.transaction_id}) {transaction.transaction_type} - ${transaction.amount} - {transaction.date}")
         while True:   
             user_choice_id = GetIntegerInput("Enter Transaction ID to delete: ")
-            if (1 <= user_choice_id <= len(transaction_main_list)):
-                user_choice_id -= 1
-                transaction_main_list.pop(user_choice_id)
-                break
-            else:
-                print("Invalid Transaction ID!")
+            
+            for transaction in transaction_main_list:
+                if transaction.transaction_id == user_choice_id:
+                    transaction_main_list.remove(transaction)
+                    print("Transaction successfully deleted!")
+                    return
+
+            print("Invalid Transaction ID!")
+            
         print("Transaction successfully deleted!")
     else:
         print("No transactions available!")
@@ -155,42 +165,18 @@ def SearchTransactions(transaction_main_list):
             match (selected_choice):
                 case 1:
                     selected_type = ChooseTransactionType()
-                    is_found = False
-                    for transaction in transaction_main_list:
-                        if (transaction.transaction_type == selected_type) :
-                            print(transaction)
-                            is_found = True
-                    if (is_found == False):
-                        print("No matching transactions found.")
+                    DisplaySearchResults(transaction_main_list,lambda transaction: transaction.transaction_type == selected_type)
                 case 2:
                     selected_category = ChooseCategory(ChooseTransactionType())
-                    is_found = False
-                    for transaction in transaction_main_list:
-                        if (transaction.category == selected_category):
-                            print(transaction)
-                            is_found = True
-                    if (is_found == False):
-                        print("No matching transactions found.")
+                    DisplaySearchResults(transaction_main_list, lambda transaction: transaction.category == selected_category)
                         
                 case 3:
                     entered_date = input("\nEnter date (DD-MM-YYYY): ")
-                    is_found = False
-                    for transaction in transaction_main_list:
-                        if (transaction.date == entered_date):
-                            print(transaction)
-                            is_found = True
-                    if (is_found == False):
-                        print("No matching transactions found.")
+                    DisplaySearchResults(transaction_main_list, lambda transaction: transaction.date == entered_date)
     
                 case 4:
                     entered_description = input("\nEnter description: ")
-                    is_found = False
-                    for transaction in transaction_main_list:
-                        if (entered_description.lower() in (transaction.description).lower()):
-                            print(transaction)
-                            is_found = True
-                    if (is_found == False):
-                        print("No matching transactions found.") 
+                    DisplaySearchResults(transaction_main_list, lambda transaction: entered_description.lower() in transaction.description.lower())
             break          
         else:
             print("Enter from the given choices only!")
