@@ -147,7 +147,6 @@ def UpdateTransaction(transaction_main_list):
                             case 5:
                                 print("Update cancelled!")
                                 return
-                        break
                     else:
                         print("Enter from the above choices only!")
             else:
