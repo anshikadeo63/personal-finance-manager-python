@@ -1,6 +1,6 @@
 # HELPER FXN - GetAmount (error handling for amount)
 # PARAMETERS - None
-# RETURN VALUES - None
+# RETURN VALUES - amount(int)
 def GetAmount():
     # loops until amount is a number
     while True:

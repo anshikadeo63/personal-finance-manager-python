@@ -159,8 +159,8 @@ def UpdateTransaction(transaction_main_list):
 # RETURN VALUES - None        
 def SearchTransactions(transaction_main_list):
     while True:
-        selected_choice = GetIntegerInput("\nSearch by\n1. Transaction Type\n2. Category\n3. Date\n4. Description\nEnter choice: ")
-        if (1<= selected_choice <= 4):
+        selected_choice = GetIntegerInput("\nSearch by\n1. Transaction Type\n2. Category\n3. Date\n4. Description\n5. Amount\nEnter choice: ")
+        if (1<= selected_choice <= 5):
             match (selected_choice):
                 case 1:
                     selected_type = ChooseTransactionType()
@@ -176,6 +176,10 @@ def SearchTransactions(transaction_main_list):
                 case 4:
                     entered_description = input("\nEnter description: ")
                     DisplaySearchResults(transaction_main_list, lambda transaction: entered_description.lower() in transaction.description.lower())
+                case 5:
+                    entered_amount = GetAmount()
+                    DisplaySearchResults(transaction_main_list,lambda transaction: transaction.amount == entered_amount)
+
             break          
         else:
             print("Enter from the given choices only!")
