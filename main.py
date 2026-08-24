@@ -2,8 +2,21 @@ from services.transaction_functions import *
 from services.analytics import *
 from storage.csv_handler import *
 from services.budget_management import *
+import logging
 
-transaction_main_list = LoadTransactions()
+logging.basicConfig(
+    filename="finance_manager.log",
+    level=logging.INFO,
+    format="%(asctime)s - %(levelname)s - %(message)s"
+)
+
+try:
+    transaction_main_list = LoadTransactions()
+except Exception as e:
+    logging.error(f"Failed to load transactions: {e}")
+else:
+    logging.info("Transactions loaded successfully")
+    
 user_budget = None
 
 while True:
@@ -23,15 +36,18 @@ while True:
     match (selected_choice):
         case 1:
             StoreTransaction(transaction_main_list)
+            logging.info("Transaction successfully added")
             enter_input = input("Press Enter to continue.......")
         case 2:
             DisplayTransaction(transaction_main_list)
             enter_input = input("Press Enter to continue.......")
         case 3:
             UpdateTransaction(transaction_main_list)
+            logging.info("Transaction successfully updated")
             enter_input = input("Press Enter to continue.......")
         case 4:
             DeleteTransaction(transaction_main_list)
+            logging.info("Transaction successfully deleted")
             enter_input = input("Press Enter to continue.......")
         case 5:
             SearchTransactions(transaction_main_list)
@@ -75,6 +91,7 @@ while True:
                 match (selected_choice_b):
                     case 1:
                         user_budget = SetBudget()
+                        logging.info("Budget successfully created")
                         enter_input = input("Press Enter to continue.......")
                     case 2:
                         if user_budget is None:
@@ -84,12 +101,14 @@ while True:
                         enter_input = input("Press Enter to continue.......")
                     case 3:
                         user_budget = UpdateBudget()
+                        logging.info("Budget successfully updated")
                         enter_input = input("Press Enter to continue.......")
                     case 4:
                         if user_budget is None:
                             print("No budget has been set!")
                         else:
                             user_budget = DeleteBudget(user_budget)
+                            logging.info("Budget successfully deleted")
                         enter_input = input("Press Enter to continue.......")
                     case 5:
                         if user_budget is None:
@@ -101,7 +120,7 @@ while True:
                         break
         case 10:
             while True:
-                print("\n-----------------------------\n          Reports\n-----------------------------\n1. Monthly Report\n2. Category-wise Report\n3. Back to Main Menu")
+                print("\n-----------------------------\n          Reports\n-----------------------------\n1. Monthly Report\n2. Category-wise Expenditure Report\n3. Back to Main Menu")
                 while True:
                     try:
                         selected_choice_r = int(input("Enter choice: "))
@@ -117,12 +136,20 @@ while True:
                 match (selected_choice_r):
                     case 1:
                         MonthlyReports(transaction_main_list)
+                        logging.info("Monthly report generated successfully")
                     case 2:
                         CategoryBasedReport(transaction_main_list)
+                        logging.info("Category-based report generated successfully")
                     case 3:
                         break
         case 11:
-            SaveTransactionsToCSV(transaction_main_list)
+            try:
+                SaveTransactionsToCSV(transaction_main_list)
+            except Exception as e:
+                logging.error(f"Failed to save transactions: {e}")
+            else:
+                logging.info("Transactions saved successfully")
+                
             print("Thank you for visiting our transaction management system!")
             break
 

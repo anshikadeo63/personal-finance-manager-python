@@ -88,7 +88,7 @@ def MonthlyReports(transaction_main_list):
         print("No transactions found for the selected month.")
     else:
        total_income, total_expense, balance = CalculateBalance(result_list)
-       print("\n----------------------------       Monthly Report\n----------------------------")
+       print("\n----------------------------\n       Monthly Report\n----------------------------")
        print(f"Month: {entered_month}/{entered_year}\nTotal Income: ${total_income}\nTotal Expense: ${total_expense}\nBalance: ${balance}")
        print("----------------------------")       
 
@@ -100,8 +100,8 @@ def CategoryBasedReport(transaction_main_list):
         print("No transactions available!")
     else:
         dict_expense = ExpenseSummary(transaction_main_list)
-        print("\n----------------------------\n      Category Report\n----------------------------")
-        for category,amount in dict_expense.items():
+        print("\n----------------------------\n      Category Expenditure Report\n----------------------------")
+        for category, amount in dict_expense.items():
             print(f"{category}: ${amount}")
             
         print("----------------------------")

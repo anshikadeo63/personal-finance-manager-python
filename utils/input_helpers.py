@@ -1,3 +1,5 @@
+import re
+
 # HELPER FXN - GetAmount (error handling for amount)
 # PARAMETERS - None
 # RETURN VALUES - amount(int)
@@ -23,3 +25,10 @@ def GetIntegerInput(string):
                 return number
             except ValueError:
                 print("Enter a number only!")       
+
+# HELPER FXN - ValidateDescription (validating description)
+# PARAMETERS - description(str)
+# RETURN VALUES - Boolean
+def ValidateDescription(description):
+    pattern = r"^[A-Za-z0-9 .,!?'-]+$"
+    return re.fullmatch(pattern, description) is not None

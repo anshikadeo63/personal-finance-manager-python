@@ -61,7 +61,15 @@ def AddTransaction():
     transaction_category = ChooseCategory(transaction_type)
     # date       
     transaction_date = datetime.now().strftime("%d-%m-%Y")    
-    transaction_description = input("Write description for the transaction: ")
+    
+    while True:
+        transaction_description = input("Enter description: ")
+
+        if ValidateDescription(transaction_description):
+            break
+
+        print("Description contains invalid characters!")
+    
     transaction1 = Transaction(transaction_type, transaction_amount, transaction_category, transaction_date, transaction_description)
 
     return transaction1
@@ -103,55 +111,67 @@ def DeleteTransaction(transaction_main_list):
                     return
 
             print("Invalid Transaction ID!")
-            
-        print("Transaction successfully deleted!")
+
     else:
         print("No transactions available!")
 
 # FXN - UpdateTransaction (updates attributes of transaction obj)
 # PARAMETERS - transaction_main_list(list)
 # RETURN VALUES - None
-def UpdateTransaction(transaction_main_list):
-    if len(transaction_main_list) != 0:
-        print("--------------------------------------------")
-        print("          Update transactions")
-        print("--------------------------------------------")
-        for transaction_id, transaction in enumerate(transaction_main_list, start=1):
-            print(f"(ID {transaction_id}) {transaction.transaction_type} - ${transaction.amount} - {transaction.date}")
-        while True:            
-            user_choice_id = GetIntegerInput("Enter Transaction ID to update: ")
-            if (1 <= user_choice_id <= len(transaction_main_list)):
-                user_choice_id -= 1
-                while True:
-                    user_update_choice = GetIntegerInput("\nWhat do you want to update?\n1. Transaction Type\n2. Amount\n3. Category\n4. Description\n5. Cancel\nEnter: ")
-                    if (1 <= user_update_choice <= 5):
-                        match (user_update_choice):
-                            case 1:
-                                new_type = ChooseTransactionType()
-                                transaction_main_list[user_choice_id].transaction_type = new_type
-                                new_category = ChooseCategory(transaction_main_list[user_choice_id].transaction_type)
-                                transaction_main_list[user_choice_id].category = new_category
-                                print("Transaction type successfully updated!")
-                            case 2:
-                                new_amount = GetAmount()
-                                transaction_main_list[user_choice_id].amount = new_amount
-                                print("Amount Successfully updated!")
-                            case 3:
-                                new_category_c = ChooseCategory(transaction_main_list[user_choice_id].transaction_type)
-                                transaction_main_list[user_choice_id].category = new_category_c
-                                print("Category successfully updated!")
-                            case 4:
-                                new_description = input("Enter new description: ")
-                                transaction_main_list[user_choice_id].description = new_description
-                                print("Description successfully updated!")
-                            case 5:
-                                print("Update cancelled!")
-                                return
-                    else:
-                        print("Enter from the above choices only!")
-            else:
-                print("Invalid Transaction ID!")
-    else:
+def UpdateTransaction(transaction_main_list): 
+    if len(transaction_main_list) != 0: 
+        print("--------------------------------------------") 
+        print("          Update transactions") 
+        print("--------------------------------------------") 
+         
+        for transaction in transaction_main_list: 
+            print(f"(ID {transaction.transaction_id}) {transaction.transaction_type} - ${transaction.amount} - {transaction.date}") 
+         
+        while True:             
+            user_choice_id = GetIntegerInput("Enter Transaction ID to update: ") 
+            selected_transaction = None 
+ 
+            for transaction in transaction_main_list: 
+                if transaction.transaction_id == user_choice_id: 
+                    selected_transaction = transaction 
+                    break 
+ 
+            if selected_transaction is not None: 
+                while True: 
+                    user_update_choice = GetIntegerInput("\nWhat do you want to update?\n1. Transaction Type\n2. Amount\n3. Category\n4. Description\n5. Cancel\nEnter: ") 
+                    if (1 <= user_update_choice <= 5): 
+                        match (user_update_choice): 
+                            case 1: 
+                                new_type = ChooseTransactionType() 
+                                selected_transaction.transaction_type = new_type 
+                                new_category = ChooseCategory(selected_transaction.transaction_type) 
+                                selected_transaction.category = new_category 
+                                print("Transaction type successfully updated!") 
+                            case 2: 
+                                new_amount = GetAmount() 
+                                selected_transaction.amount = new_amount 
+                                print("Amount Successfully updated!") 
+                            case 3: 
+                                new_category_c = ChooseCategory(selected_transaction.transaction_type) 
+                                selected_transaction.category = new_category_c 
+                                print("Category successfully updated!") 
+                            case 4:  
+                                while True:
+                                    new_description = input("Enter new description: ")
+                                    if ValidateDescription(new_description):
+                                        selected_transaction.description = new_description
+                                        print("Description successfully updated!")
+                                        break
+                                    print("Description contains invalid characters!") 
+                            case 5: 
+                                print("Update cancelled!") 
+                                return 
+                    else: 
+                        print("Enter from the above choices only!") 
+                break
+            else: 
+                print("Invalid Transaction ID!") 
+    else: 
         print("No transactions available!")
         
 # FXN - SearchTransactions (searches transaction based on a attribute)

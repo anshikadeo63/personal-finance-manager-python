@@ -1,7 +1,7 @@
 from models.transaction import Transaction
 from utils.input_helpers import *
 
-# FXN - ExpenseSummary (finds total income, expense and overall balance)
+# FXN - CalculateBalance (finds total income, expense and overall balance)
 # PARAMETERS - transaction_main_list (list)
 # RETURN VALUES - total_income (float), total_expense (float), balance(float)
 def CalculateBalance(transaction_main_list):
