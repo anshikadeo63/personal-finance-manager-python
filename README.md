@@ -59,9 +59,25 @@ This project demonstrates:
 * Modular project organization
 * Separation of models, services, utilities, and storage
 
+## Screenshots
+
+### Main Menu
+![Main Menu](images/main_menu.png)
+
+### Transaction Management
+![Transactions](images/adding_transaction.png)
+
+### Budget Management
+![Budget](images/budget_management.png)
+
+### Reports
+![Reports](images/reports.png)
+
+### Searching Transactions
+![Searching](images/searching_options.png)
+
 ## Project Structure
 
-```text
 personal-finance-manager-python/
 │
 ├── main.py
@@ -83,10 +99,18 @@ personal-finance-manager-python/
 ├── data/
 │   └── transactions.csv
 │
+├── images/
+│   ├── main_menu.png
+│   ├── adding_transaction.png
+│   ├── budget_management.png
+│   ├── reports.png
+│   └── searching_options.png
+│
 ├── finance_manager.log
 │
+├── .gitignore
+│
 └── README.md
-```
 
 ## How It Works
 
@@ -243,7 +267,7 @@ The application provides user-friendly messages for common input errors instead 
 ### 1. Clone the repository
 
 ```bash
-git clone <https://github.com/anshikadeo63/personal-finance-manager-python>
+git clone https://github.com/anshikadeo63/personal-finance-manager-python.git
 ```
 
 ### 2. Navigate into the project
@@ -262,7 +286,7 @@ No external Python packages are required because the project uses Python's stand
 
 ## Example Workflow
 
-```text
+```
 Personal Finance Manager
 
 1. Add Transaction
