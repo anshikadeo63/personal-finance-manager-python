@@ -78,6 +78,7 @@ This project demonstrates:
 
 ## Project Structure
 
+```text
 personal-finance-manager-python/
 │
 ├── main.py
@@ -111,6 +112,7 @@ personal-finance-manager-python/
 ├── .gitignore
 │
 └── README.md
+```
 
 ## How It Works
 
